@@ -11,14 +11,18 @@
                 class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-[#0b63f3] hover:text-white-500">
                 Nuevo Artículo
               </button>
-              <div class="flex">
+              <div class="flex items-center">
                 <input type="text"
                   class="py-2 px-4 border rounded w-80 focus:outline-none bg-gray-100 placeholder-gray-500"
                   v-model="searchTerm" placeholder="Busca por título..." />
+                <button @click="searchArticles"
+                  class="ml-2 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700">
+                  Buscar
+                </button>
               </div>
             </div>
             <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              <div class="group relative" v-for="articulo in filteredArticulos" :key="articulo.id">
+              <div class="group relative" v-for="articulo in results" :key="articulo.id">
                 <div class="rounded-md shadow-custom bg-white">
                   <div class="p-4">
                     <h5 class="font-semibold text-xl text-[#4d4d4d] mb-4">
@@ -79,7 +83,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Header from './../layouts/Header.vue';
 import LoadingProgress from './../layouts/LoadingProgress.vue';
 import IconTooling from './../layouts/IconTooling.vue';
@@ -88,7 +92,7 @@ import VerArticulo from './../components/VerArticulo.vue';
 import { useArticulos } from "./../composables/useArticulo";
 import Message from '~/components/Message.vue';
 
-const { results, loading, findArticulo, deleteArticulo } = useArticulos();
+const { results, loading, findArticulo, findArticuloByTitulo, deleteArticulo } = useArticulos();
 
 const searchTerm = ref('');
 const selectedArticuloId = ref('');
@@ -108,8 +112,6 @@ const handleCloseAddModal = async () => {
 const openDetailModal = (articulo) => {
   isDetailModalOpen.value = true;
   selectedArticuloId.value = articulo.id;
-  console.log("ID ?????????");
-  console.log(selectedArticuloId.value);
 };
 
 const handleCloseDetailModal = async () => {
@@ -175,9 +177,11 @@ const formatDate = (date) => {
   return new Date(date).toLocaleDateString(undefined, options);
 };
 
-const filteredArticulos = computed(() => {
-  return results.value.filter(articulo => {
-    return articulo.titulo.toLowerCase().includes(searchTerm.value.toLowerCase());
-  });
-});
+const searchArticles = async () => {
+  try {
+    await findArticuloByTitulo(searchTerm.value);
+  } catch (error) {
+    console.error('Error al buscar artículos:', error);
+  }
+};
 </script>

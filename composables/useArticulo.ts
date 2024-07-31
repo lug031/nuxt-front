@@ -36,13 +36,34 @@ export const useArticulos = () => {
     }
   };
 
+  const findArticuloByTitulo = async (titulo: string): Promise<void> => {
+    try {
+      loading.value = true;
+      if (titulo.trim() === '') {
+        await findArticulo();
+      } else {
+        const result = await store.findByTitulo(titulo);
+        if (result) {
+          results.value = [result];
+        } else {
+          results.value = [];
+        }
+      }
+      loading.value = false;
+    } catch (error) {
+      console.error('Error al obtener el artículo por título:', titulo);
+      results.value = [];
+      loading.value = false;
+    }
+  };
+
   const findArticuloById = async (id: string): Promise<void> => {
     try {
       loading.value = true;
       const result = await store.findArticuloById(id);
       if (result) {
         currentArticulo.value = result;
-        
+
         Object.assign(filters.value, result);
       } else {
         console.error('No se encontró el artículo con ID:', id);
@@ -223,6 +244,7 @@ export const useArticulos = () => {
     closeModalDetail,
     closeEditModal,
     findArticulo,
+    findArticuloByTitulo,
     findArticuloById,
     deleteArticulo,
     createArticulo,
