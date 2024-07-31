@@ -19,7 +19,7 @@
             </div>
             <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               <div class="group relative" v-for="articulo in filteredArticulos" :key="articulo.id">
-                <div class="rounded-md shadow-md bg-white">
+                <div class="rounded-md shadow-custom bg-white">
                   <div class="p-4">
                     <h5 class="font-semibold text-xl text-[#4d4d4d] mb-4">
                       {{ articulo.titulo.length > 20 ? articulo.titulo.substring(0, 25) + '...' : articulo.titulo }}

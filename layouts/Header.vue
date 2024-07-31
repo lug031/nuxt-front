@@ -13,9 +13,6 @@
             <NuxtLink to="/articulo" class="text-ct-dark-600">Articulo</NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/doc" class="text-ct-dark-600">Documentacion</NuxtLink>
-          </li>
-          <li>
             <NuxtLink to="/about" class="text-ct-dark-600">About</NuxtLink>
           </li>
           <li class="ml-2 lg:ml-4 relative inline-block">

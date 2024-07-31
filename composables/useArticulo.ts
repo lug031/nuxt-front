@@ -170,6 +170,19 @@ export const useArticulos = () => {
     }
   };
 
+  const docsSwagger = async (): Promise<string | null> => {
+    try {
+      loading.value = true;
+      const result = await store.docsSwagger();
+      loading.value = false;
+      return result;
+    } catch (error) {
+      console.error('Error al obtener la documentación de Swagger:', error);
+      loading.value = false;
+      return null;
+    }
+  };
+
   const openModal = () => {
     isModalOpen.value = true;
   };
@@ -213,6 +226,7 @@ export const useArticulos = () => {
     findArticuloById,
     deleteArticulo,
     createArticulo,
-    updateArticulo
+    updateArticulo,
+    docsSwagger
   };
 };

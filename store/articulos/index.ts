@@ -8,7 +8,7 @@ export const useArticulosStore = defineStore("crudArticulos", {
   actions: {
     async find(): Promise<IArticulo[]> {
       try {
-        const { data } = await articulos.get(`/`);
+        const { data } = await articulos.get(`api/v1/articulos`);
         return data;
       } catch (error) {
         console.error('Error al obtener artículos:', error);
@@ -17,7 +17,7 @@ export const useArticulosStore = defineStore("crudArticulos", {
     },
     async findByTitulo(titulo: string): Promise<IArticulo | null> {
       try {
-        const { data } = await articulos.get(`/titulo`, {
+        const { data } = await articulos.get(`api/v1/articulos/titulo`, {
           params: { titulo }
         });
         return data;
@@ -28,7 +28,7 @@ export const useArticulosStore = defineStore("crudArticulos", {
     },
     async findArticuloById(id: string): Promise<IArticulo | null> {
       try {
-        const { data } = await articulos.get(`/${id}`);
+        const { data } = await articulos.get(`api/v1/articulos/${id}`);
         return data;
       } catch (error) {
         console.error('Error al obtener artículo por ID:', error);
@@ -37,7 +37,7 @@ export const useArticulosStore = defineStore("crudArticulos", {
     },
     async createArticulo(createArticuloDto: any): Promise<IArticulo | null> {
       try {
-        const { data } = await articulos.post(`/`, createArticuloDto);
+        const { data } = await articulos.post(`api/v1/articulos/`, createArticuloDto);
         return data;
       } catch (error) {
         console.error('Error al crear artículo:', error);
@@ -47,7 +47,7 @@ export const useArticulosStore = defineStore("crudArticulos", {
     
     async updateArticulo(id: string, updateArticuloDto: any): Promise<IArticulo | null> {
       try {
-        const { data } = await articulos.patch(`/${id}`, updateArticuloDto);
+        const { data } = await articulos.patch(`api/v1/articulos/${id}`, updateArticuloDto);
         return data;
       } catch (error) {
         console.error('Error al actualizar artículo:', error);
@@ -57,12 +57,23 @@ export const useArticulosStore = defineStore("crudArticulos", {
     
     async deleteArticulo(id: string): Promise<boolean> {
       try {
-        await articulos.delete(`/${id}`);
+        await articulos.delete(`api/v1/articulos/${id}`);
         return true;
       } catch (error) {
         console.error('Error al eliminar artículo:', error);
         return false;
       }
     },
+
+    async docsSwagger(): Promise<any> {
+      try {
+        const { data } = await articulos.get(`/docs`);
+        console.log('data', data);
+        return data;
+      } catch (error) {
+        console.error('Error al obtener la documentación de Swagger:', error);
+        return null;
+      }
+    }
   },
 });
